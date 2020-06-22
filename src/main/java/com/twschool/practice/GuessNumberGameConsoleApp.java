@@ -1,14 +1,17 @@
 package com.twschool.practice;
 
+
 import com.twschool.practice.domain.AnswerGenerator;
 import com.twschool.practice.domain.GameAnswer;
 import com.twschool.practice.domain.GameStatus;
 import com.twschool.practice.domain.GuessNumberGame;
+import jdk.nashorn.internal.ir.ContinueNode;
 
+import java.text.BreakIterator;
 import java.util.*;
 
 public class GuessNumberGameConsoleApp {
-    
+
 //    public static void main(String[] args) {
 //        GuessNumberGame guessNumberGame = new GuessNumberGame(new AnswerGenerator());
 //        System.out.println("please guess number: eg, 1 2 3 4");
@@ -33,17 +36,17 @@ public class GuessNumberGameConsoleApp {
     private static int valueAndPositionCorrectCount;
     private static int positionCorrectCount;
     private static int gameTimesInOneMatch;
+    private static List<String> resultOfWinAndLoseForOneUser;
 
     public GuessNumberGameConsoleApp(String answerString) {
         GuessNumberGameConsoleApp.answerNumbers = Arrays.asList(answerString.split(" "));
     }
 
     public GuessNumberGameConsoleApp() {
-        //this.answerNumbers = Arrays.asList("1", "2", "3", "4");
+
     }
 
     public static void main(String args[]) {
-        //单局游戏次数
         gameTimesInOneMatch = 0;
         String userAnswer = null;
         GuessNumberGameConsoleApp answer = new GuessNumberGameConsoleApp();
@@ -51,7 +54,6 @@ public class GuessNumberGameConsoleApp {
         GuessNumberGameConsoleApp.answerNumbers = generateAnswer.generateAnswerForListType();
         ArrayList<String> userInput = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
-
         while (!GuessNumberGameConsoleApp.answerNumbers.toString().equals(userInput.toString())) {
             userInput.clear();
             valueAndPositionCorrectCount = 0;
@@ -60,11 +62,10 @@ public class GuessNumberGameConsoleApp {
             for (int i = 0; i < 4; i++) {
                 userInput.add(sc.next());
             }
-            if(answer.isRepeat(userInput)){
+            if (answer.isRepeat(userInput)) {
                 userInput.clear();
-            }
-            else{
-                userAnswer = userInput.toString().replace("[", "").replace("]", "").replace(",", "");
+            } else {
+                userAnswer = getUserInputForString(userInput);
                 String result = answer.check(userAnswer);
                 resultCompareInOneMatch(result);
                 gameTimesInOneMatch++;
@@ -72,15 +73,27 @@ public class GuessNumberGameConsoleApp {
         }
     }
 
-    private static void resultCompareInOneMatch(String result) {
+    public static String getUserInputForString(ArrayList<String> userInput) {
+        String userAnswer;
+        userAnswer = userInput.toString().replace("[", "").replace("]", "").replace(",", "");
+        return userAnswer;
+    }
+
+    public static void resultCompareInOneMatch(String result) {
         if (result.equals("4A0B")) {
             System.out.println(result + "        Congratulations，you win！");
+             //resultOfWinAndLoseForOneUser.add("win");
+
             System.exit(0);
+
         } else if (gameTimesInOneMatch < 5) {
-            System.out.println(result + "        Sorry,please try again! The left game times：" + (5-gameTimesInOneMatch));
+            System.out.println(result + "        Sorry,please try again! The left game times：" + (5 - gameTimesInOneMatch));
         } else {
-            System.out.println("Sorry，you have failed！The right answer is:" +answerNumbers.toString() );
+            System.out.println("Sorry，you have failed！The right answer is:" + answerNumbers.toString());
+            //resultOfWinAndLoseForOneUser.add("lose");
+
             System.exit(0);
+
         }
     }
 
@@ -97,21 +110,15 @@ public class GuessNumberGameConsoleApp {
         }
         return valueAndPositionCorrectCount + "A" + positionCorrectCount + "B";
     }
-    public boolean isRepeat( List<String> list){
+
+    public boolean isRepeat(List<String> list) {
         long count = list.stream().distinct().count();
-        if(count < list.size()){
+        if (count < list.size()) {
             System.out.println("Warning! There exsit some repeat number,please input diffierent number:");
             return true;
         }
         return false;
     }
-
-
-
-
-
-
-
 
 
 }
