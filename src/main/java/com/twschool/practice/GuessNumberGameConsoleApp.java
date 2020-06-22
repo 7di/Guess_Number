@@ -32,6 +32,7 @@ public class GuessNumberGameConsoleApp {
     private static List<String> answerNumbers;
     private static int valueAndPositionCorrectCount;
     private static int positionCorrectCount;
+    private static int gameTimesInOneMatch;
 
     public GuessNumberGameConsoleApp(String answerString) {
         GuessNumberGameConsoleApp.answerNumbers = Arrays.asList(answerString.split(" "));
@@ -42,40 +43,44 @@ public class GuessNumberGameConsoleApp {
     }
 
     public static void main(String args[]) {
-        int gameTimes = 0;//单局游戏次数
-        String userAnswer1 = null;
+        //单局游戏次数
+        gameTimesInOneMatch = 0;
+        String userAnswer = null;
         GuessNumberGameConsoleApp answer = new GuessNumberGameConsoleApp();
-      //  GuessNumberGameConsoleApp.answerNumbers = Arrays.asList("1", "2", "3", "4");
         AnswerGenerator generateAnswer = new AnswerGenerator();
-        GuessNumberGameConsoleApp.answerNumbers = generateAnswer.generateAnswer1();
-        ArrayList<String> userAnswer = new ArrayList<>();
+        GuessNumberGameConsoleApp.answerNumbers = generateAnswer.generateAnswerForListType();
+        ArrayList<String> userInput = new ArrayList<>();
         Scanner sc = new Scanner(System.in);
 
-        while (!GuessNumberGameConsoleApp.answerNumbers.toString().equals(userAnswer.toString())) {
-            userAnswer.clear();
+        while (!GuessNumberGameConsoleApp.answerNumbers.toString().equals(userInput.toString())) {
+            userInput.clear();
             valueAndPositionCorrectCount = 0;
             positionCorrectCount = 0;
             System.out.println("Please guess number:eg,1 2 3 4");
             for (int i = 0; i < 4; i++) {
-                userAnswer.add(sc.next());
+                userInput.add(sc.next());
             }
-            if(answer.isRepeat(userAnswer)){
-                userAnswer.clear();
+            if(answer.isRepeat(userInput)){
+                userInput.clear();
             }
             else{
-                userAnswer1 = userAnswer.toString().replace("[", "").replace("]", "").replace(",", "");
-                String result = answer.check(userAnswer1);
-                if (result.equals("4A0B")) {
-                    System.out.println(result + "        Congratulations，you win！");
-                    System.exit(0);
-                } else if (gameTimes < 5) {
-                    System.out.println(result + "        Sorry,please try again! The left game times：" + (5-gameTimes));
-                } else {
-                    System.out.println("Sorry，you have failed！The right answer is:" +answerNumbers.toString() );
-                    System.exit(0);
-                }
-                gameTimes++;
+                userAnswer = userInput.toString().replace("[", "").replace("]", "").replace(",", "");
+                String result = answer.check(userAnswer);
+                resultCompareInOneMatch(result);
+                gameTimesInOneMatch++;
             }
+        }
+    }
+
+    private static void resultCompareInOneMatch(String result) {
+        if (result.equals("4A0B")) {
+            System.out.println(result + "        Congratulations，you win！");
+            System.exit(0);
+        } else if (gameTimesInOneMatch < 5) {
+            System.out.println(result + "        Sorry,please try again! The left game times：" + (5-gameTimesInOneMatch));
+        } else {
+            System.out.println("Sorry，you have failed！The right answer is:" +answerNumbers.toString() );
+            System.exit(0);
         }
     }
 
