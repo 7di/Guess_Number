@@ -12,25 +12,6 @@ import java.util.*;
 
 public class GuessNumberGameConsoleApp {
 
-//    public static void main(String[] args) {
-//        GuessNumberGame guessNumberGame = new GuessNumberGame(new AnswerGenerator());
-//        System.out.println("please guess number: eg, 1 2 3 4");
-//        while (guessNumberGame.getStatus() == GameStatus.CONTINUED) {
-//            Scanner scanner = new Scanner(System.in);
-//            String userInput = scanner.nextLine();
-//
-//            String result = guessNumberGame.guess(userInput);
-//
-//            System.out.println(String.format("guess result: %s", result));
-//        }
-//
-//        if (guessNumberGame.getStatus() == GameStatus.SUCCEED) {
-//            System.out.println("Congratulations, you guess succeed");
-//        }
-//        if (guessNumberGame.getStatus() == GameStatus.FAILED) {
-//            System.out.println("Sorry, you guess failed");
-//        }
-//    }
 
     private static List<String> answerNumbers;
     private static int valueAndPositionCorrectCount;
@@ -83,17 +64,13 @@ public class GuessNumberGameConsoleApp {
         if (result.equals("4A0B")) {
             System.out.println(result + "        Congratulations，you win！");
              //resultOfWinAndLoseForOneUser.add("win");
-
             System.exit(0);
-
         } else if (gameTimesInOneMatch < 5) {
             System.out.println(result + "        Sorry,please try again! The left game times：" + (5 - gameTimesInOneMatch));
         } else {
             System.out.println("Sorry，you have failed！The right answer is:" + answerNumbers.toString());
             //resultOfWinAndLoseForOneUser.add("lose");
-
             System.exit(0);
-
         }
     }
 
