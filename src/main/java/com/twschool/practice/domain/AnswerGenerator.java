@@ -13,4 +13,12 @@ public class AnswerGenerator {
         List<String> answerNumbers = sourceNumbers.stream().limit(4).collect(Collectors.toList());
         return new GameAnswer(String.join(" ", answerNumbers));
     }
+    public List<String> generateAnswer1() {
+        List<String> sourceNumbers = IntStream.rangeClosed(0, 9).boxed().map(String::valueOf).collect(Collectors.toList());
+        Collections.shuffle(sourceNumbers);
+
+        List<String> answerNumbers = sourceNumbers.stream().limit(4).collect(Collectors.toList());
+        return answerNumbers;
+    }
+
 }
