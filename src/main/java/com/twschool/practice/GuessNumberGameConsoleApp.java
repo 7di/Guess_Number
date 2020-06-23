@@ -47,9 +47,9 @@ public class GuessNumberGameConsoleApp {
     }
 
     private static boolean isContine(boolean flag, Scanner scanner) {
-        System.out.println("是否继续游戏：Y or N ");
+        System.out.println("--------是否继续游戏？ Y：继续    N：退出并显示积分-------- ");
         String s = scanner.nextLine();
-        if ("N".equals(s)) {
+        if ("n".equals(s.toLowerCase())) {
             flag = false;
         }
         return flag;
